@@ -14,7 +14,7 @@ public class ArrayStorage {
      * Clear array. Also reset realSize
      */
     void clear() {
-        storage = new Resume[10000];
+        Arrays.fill(storage, null);
         realSize = 0;
     }
 
@@ -24,6 +24,9 @@ public class ArrayStorage {
      * @param resume inputed Resume
      */
     void save(Resume resume) {
+        if (storage == null) {
+            storage = new Resume[10000];
+        }
         storage[realSize] = resume;
         realSize++;
     }
@@ -49,7 +52,9 @@ public class ArrayStorage {
     void delete(String uuid) {
         for (int i = 0; i < size(); i++) {
             if (uuid.equals(storage[i].uuid)) {
-                if (size() - 1 - i >= 0) System.arraycopy(storage, i + 1, storage, i, size() - 1 - i);
+                if (size() - 1 - i >= 0) {
+                    System.arraycopy(storage, i + 1, storage, i, size() - 1 - i);
+                }
                 realSize--;
                 break;
             }
