@@ -4,6 +4,9 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
+    private final static String ERROR_RESUME_NOT_FOUND = "Resume not exist in storage";
+    private final static String ERROR_RESUME_FOUND = "Resume already exist in storage";
+    private final static String ERROR_STORAGE_OVERLOAD = "Cant save, storage overloaded";
     private Resume[] storage = new Resume[10000];
     /**
      * Add realSize counter, that contains size of array
@@ -19,13 +22,53 @@ public class ArrayStorage {
     }
 
     /**
+     * Update resume if it founded, else error message
+     *
+     * @param resume inputed Resume
+     */
+    public void update(Resume resume) {
+        int foundResumeUuid = checkExistResume(resume.uuid);
+        if (foundResumeUuid != -1) {
+            storage[foundResumeUuid] = resume;
+        } else {
+            System.out.println(ERROR_RESUME_NOT_FOUND);
+        }
+    }
+
+    /**
+     * Check if storage have resume
+     *
+     * @param uuid inputed resume
+     * @return -1 if not, position if have
+     */
+    private int checkExistResume(String uuid) {
+        int foundResumeUuid = -1;
+        for (int i = 0; i < realSize; i++) {
+            if (uuid.equals(storage[i].uuid)) {
+                foundResumeUuid = i;
+                break;
+            }
+        }
+        return foundResumeUuid;
+    }
+
+    /**
      * Add resume to array, increase array size counter
      *
      * @param resume inputed Resume
      */
     void save(Resume resume) {
-        storage[realSize] = resume;
-        realSize++;
+        int foundResumeUuid = checkExistResume(resume.uuid);
+        if (foundResumeUuid == -1) {
+            if (realSize + 1 >= storage.length) {
+                printMessage(ERROR_STORAGE_OVERLOAD);
+            } else {
+                storage[realSize] = resume;
+                realSize++;
+            }
+        } else {
+            printMessage(ERROR_RESUME_FOUND);
+        }
     }
 
     /**
@@ -33,10 +76,11 @@ public class ArrayStorage {
      * @return element of array where id = uuid. If cant find, return null
      */
     Resume get(String uuid) {
-        for (int i = 0; i < realSize; i++) {
-            if (uuid.equals(storage[i].uuid)) {
-                return storage[i];
-            }
+        int foundResumeUuid = checkExistResume(uuid);
+        if (foundResumeUuid != -1) {
+            return storage[foundResumeUuid];
+        } else {
+            printMessage(ERROR_RESUME_NOT_FOUND);
         }
         return null;
     }
@@ -47,12 +91,12 @@ public class ArrayStorage {
      * @param uuid inputed id name
      */
     void delete(String uuid) {
-        for (int i = 0; i < realSize; i++) {
-            if (uuid.equals(storage[i].uuid)) {
-                System.arraycopy(storage, i + 1, storage, i, realSize - 1 - i);
-                realSize--;
-                break;
-            }
+        int foundResumeUuid = checkExistResume(uuid);
+        if (foundResumeUuid != -1) {
+            System.arraycopy(storage, foundResumeUuid + 1, storage, foundResumeUuid, realSize - 1 - foundResumeUuid);
+            realSize--;
+        } else {
+            printMessage(ERROR_RESUME_NOT_FOUND);
         }
     }
 
@@ -68,5 +112,9 @@ public class ArrayStorage {
      */
     int size() {
         return realSize;
+    }
+
+    private void printMessage(String message) {
+        System.out.println(message);
     }
 }
