@@ -18,7 +18,7 @@ public class ArrayStorage {
      *
      * @param resume inputed Resume
      */
-    public void update(Resume resume) {
+    void update(Resume resume) {
         int foundResumeId = checkExistResume(resume.uuid);
         if (foundResumeId != -1) {
             storage[foundResumeId] = resume;

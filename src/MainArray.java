@@ -36,7 +36,7 @@ public class MainArray {
                     ARRAY_STORAGE.save(r);
                     printAll();
                     break;
-                case "update":
+                case "update": //Add update check
                     r = new Resume();
                     r.uuid = uuid;
                     ARRAY_STORAGE.update(r);
