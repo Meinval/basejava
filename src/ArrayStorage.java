@@ -19,7 +19,7 @@ public class ArrayStorage {
      * @param resume inputed Resume
      */
     void update(Resume resume) {
-        int foundResumeId = checkExistResume(resume.uuid);
+        int foundResumeId = checkResumeAvailability(resume.uuid);
         if (foundResumeId != -1) {
             storage[foundResumeId] = resume;
         } else {
@@ -33,7 +33,7 @@ public class ArrayStorage {
      * @param resume inputed Resume
      */
     void save(Resume resume) {
-        int foundResumeId = checkExistResume(resume.uuid);
+        int foundResumeId = checkResumeAvailability(resume.uuid);
         if (foundResumeId == -1) {
             if (realSize >= storage.length) {
                 printMessage(ERROR_STORAGE_OVERLOAD);
@@ -59,7 +59,7 @@ public class ArrayStorage {
      * @return element of array where id = uuid. If cant find, return null
      */
     Resume get(String uuid) {
-        int foundResumeId = checkExistResume(uuid);
+        int foundResumeId = checkResumeAvailability(uuid);
         if (foundResumeId != -1) {
             return storage[foundResumeId];
         }
@@ -73,7 +73,7 @@ public class ArrayStorage {
      * @param uuid inputed id name
      */
     void delete(String uuid) {
-        int foundResumeId = checkExistResume(uuid);
+        int foundResumeId = checkResumeAvailability(uuid);
         if (foundResumeId != -1) {
             System.arraycopy(storage, foundResumeId + 1, storage, foundResumeId, realSize - 1 - foundResumeId);
             realSize--;
@@ -102,7 +102,7 @@ public class ArrayStorage {
      * @param uuid inputed resume
      * @return -1 if not, position if have
      */
-    private int checkExistResume(String uuid) {
+    private int checkResumeAvailability(String uuid) {
         for (int i = 0; i < realSize; i++) {
             if (uuid.equals(storage[i].uuid)) {
                 return i;
