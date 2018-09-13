@@ -7,7 +7,7 @@ public class ArrayStorage {
     private final static String ERROR_RESUME_NOT_FOUND = "Resume not exist in storage";
     private final static String ERROR_RESUME_FOUND = "Resume already exist in storage";
     private final static String ERROR_STORAGE_OVERLOAD = "Cant save, storage overloaded";
-    private Resume[] storage = new Resume[5];
+    private Resume[] storage = new Resume[10000];
     /**
      * Add realSize counter, that contains size of array
      */
