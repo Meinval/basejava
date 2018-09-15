@@ -75,7 +75,10 @@ public class ArrayStorage {
     void delete(String uuid) {
         int foundResumeId = checkResumeAvailability(uuid);
         if (foundResumeId != -1) {
-            System.arraycopy(storage, foundResumeId + 1, storage, foundResumeId, realSize - 1 - foundResumeId);
+            Resume[] cloneStorage = new Resume[storage.length - 1];
+            System.arraycopy(storage, 0, cloneStorage, 0, foundResumeId);
+            System.arraycopy(storage, foundResumeId + 1, cloneStorage, foundResumeId, realSize - 1 - foundResumeId);
+            storage = cloneStorage;
             realSize--;
         } else {
             printMessage(ERROR_RESUME_NOT_FOUND);
