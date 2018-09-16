@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Test for ru.javawebinar.basejava.storage.storage.ArrayStorage
+ * Test for storage.ArrayStorage
  */
 public class MainArray {
     private final static Storage ARRAY_STORAGE = new ArrayStorage();
@@ -65,7 +65,7 @@ public class MainArray {
         }
     }
 
-    static void printAll() {
+    private static void printAll() {
         Resume[] all = ARRAY_STORAGE.getAll();
         System.out.println("----------------------------");
         if (all.length == 0) {
