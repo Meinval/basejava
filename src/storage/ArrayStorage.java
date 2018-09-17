@@ -19,11 +19,11 @@ public class ArrayStorage extends AbstractArrayStorage {
     public void save(Resume r) {
         if (getIndex(r.getUuid()) != -1) {
             System.out.println("model.Resume " + r.getUuid() + " already exist");
-        } else if (size >= STORAGE_LIMIT) {
+        } else if (size() >= STORAGE_LIMIT) {
             System.out.println("Storage overflow");
         } else {
-            storage[size] = r;
-            size++;
+            storage[size()] = r;
+            setSize(size() + 1);
         }
     }
 
@@ -32,14 +32,14 @@ public class ArrayStorage extends AbstractArrayStorage {
         if (index == -1) {
             System.out.println("model.Resume " + uuid + " not exist");
         } else {
-            storage[index] = storage[size - 1];
-            storage[size - 1] = null;
-            size--;
+            storage[index] = storage[size() - 1];
+            storage[size() - 1] = null;
+            setSize(size() - 1);
         }
     }
 
     protected int getIndex(String uuid) {
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size(); i++) {
             if (uuid.equals(storage[i].getUuid())) {
                 return i;
             }

@@ -22,13 +22,13 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     public void save(Resume r) {
         int index = getIndex(r.getUuid());
         if (index < 0) {
-            if (size >= STORAGE_LIMIT) {
+            if (size() >= STORAGE_LIMIT) {
                 System.out.println("Storage overflow");
             } else {
                 index = -(index) - 1;
-                System.arraycopy(storage, index, storage, index + 1, size - index);
+                System.arraycopy(storage, index, storage, index + 1, size() - index);
                 storage[index] = r;
-                size++;
+                setSize(size() + 1);
             }
         } else {
             System.out.println("model.Resume " + r.getUuid() + " already exist");
@@ -40,17 +40,14 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         if (index < 0) {
             System.out.println("model.Resume " + uuid + " not exist");
         } else {
-            Resume[] cloneStorage = new Resume[storage.length - 1];
-            System.arraycopy(storage, 0, cloneStorage, 0, index);
-            System.arraycopy(storage, index + 1, cloneStorage, index, size - 1 - index);
-            storage = cloneStorage;
-            size--;
+            System.arraycopy(storage, index + 1, storage, index, size() - index - 1);
+            setSize(size() - 1);
         }
     }
 
     protected int getIndex(String uuid) {
         Resume searchKey = new Resume();
         searchKey.setUuid(uuid);
-        return Arrays.binarySearch(storage, 0, size, searchKey);
+        return Arrays.binarySearch(storage, 0, size(), searchKey);
     }
 }
