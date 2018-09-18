@@ -1,5 +1,8 @@
 package storage;
 
+import exception.ExistStorageException;
+import exception.NotExistStorageException;
+import exception.OverflowStorageException;
 import model.Resume;
 
 /**
@@ -10,7 +13,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     public void update(Resume r) {
         int index = getIndex(r.getUuid());
         if (index == -1) {
-            System.out.println("model.Resume " + r.getUuid() + " not exist");
+            throw new NotExistStorageException(r.getUuid());
         } else {
             storage[index] = r;
         }
@@ -18,9 +21,9 @@ public class ArrayStorage extends AbstractArrayStorage {
 
     public void save(Resume r) {
         if (getIndex(r.getUuid()) != -1) {
-            System.out.println("model.Resume " + r.getUuid() + " already exist");
+            throw new ExistStorageException(r.getUuid());
         } else if (size() >= STORAGE_LIMIT) {
-            System.out.println("Storage overflow");
+            throw new OverflowStorageException(r.getUuid());
         } else {
             storage[size()] = r;
             setSize(size() + 1);
@@ -30,7 +33,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index == -1) {
-            System.out.println("model.Resume " + uuid + " not exist");
+            throw new NotExistStorageException(uuid);
         } else {
             storage[index] = storage[size() - 1];
             storage[size() - 1] = null;

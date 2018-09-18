@@ -1,5 +1,6 @@
 package storage;
 
+import exception.NotExistStorageException;
 import model.Resume;
 
 import java.util.Arrays;
@@ -62,8 +63,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
-            System.out.println("model.Resume " + uuid + " not exist");
-            return null;
+            throw new NotExistStorageException(uuid);
         }
         return storage[index];
     }
