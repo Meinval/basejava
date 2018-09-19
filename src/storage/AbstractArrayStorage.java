@@ -1,6 +1,8 @@
 package storage;
 
+import exception.ExistStorageException;
 import exception.NotExistStorageException;
+import exception.OverflowStorageException;
 import model.Resume;
 
 import java.util.Arrays;
@@ -10,9 +12,9 @@ import java.util.Arrays;
  */
 public abstract class AbstractArrayStorage implements Storage {
 
-    static final int STORAGE_LIMIT = 10000;
+    private static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
-    private int size = 0;
+    protected int size = 0;
 
     /**
      * Update resume if it founded, else error message
@@ -20,7 +22,14 @@ public abstract class AbstractArrayStorage implements Storage {
      * @param r inputed resume to update
      */
 
-    public abstract void update(Resume r);
+    public void update(Resume r) {
+        int index = getIndex(r.getUuid());
+        if (index < 0) {
+            throw new NotExistStorageException(r.getUuid());
+        } else {
+            storage[index] = r;
+        }
+    }
 
     /**
      * Add resume to array, increase array size counter
@@ -28,7 +37,27 @@ public abstract class AbstractArrayStorage implements Storage {
      * @param r inputed resume to save
      */
 
-    public abstract void save(Resume r);
+    public void save(Resume r) {
+        if (size() >= STORAGE_LIMIT) {
+            throw new OverflowStorageException(r.getUuid());
+        } else {
+            int index = getIndex(r.getUuid());
+            if (index > -1) {
+                throw new ExistStorageException(r.getUuid());
+            } else {
+                addResume(r, index);
+                size++;
+            }
+        }
+    }
+
+    /**
+     * Add resume to storage
+     *
+     * @param resume resume to add
+     * @param index  resume position in array
+     */
+    public abstract void addResume(Resume resume, int index);
 
     /**
      * Remove resume from array, descrease array size counter
@@ -36,8 +65,23 @@ public abstract class AbstractArrayStorage implements Storage {
      * @param uuid inputed id name
      */
 
-    public abstract void delete(String uuid);
+    public void delete(String uuid) {
+        int index = getIndex(uuid);
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
+        } else {
+            removeResume(index);
+            storage[size() - 1] = null;
+            size--;
+        }
+    }
 
+    /**
+     * Remove resume from storage
+     *
+     * @param index resume to remove
+     */
+    public abstract void removeResume(int index);
 
     /**
      * @param uuid inputed id name
@@ -82,13 +126,5 @@ public abstract class AbstractArrayStorage implements Storage {
 
     public int size() {
         return size;
-    }
-
-    /**
-     * change array size counter
-     */
-
-    void setSize(int size) {
-        this.size = size;
     }
 }
