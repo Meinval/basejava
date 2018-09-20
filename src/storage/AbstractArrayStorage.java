@@ -12,9 +12,31 @@ import java.util.Arrays;
  */
 public abstract class AbstractArrayStorage implements Storage {
 
-    private static final int STORAGE_LIMIT = 10000;
+    protected static final int STORAGE_LIMIT = 10_000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
+
+    /**
+     * Add resume to storage
+     *
+     * @param resume resume to add
+     * @param index  resume position in array
+     */
+    protected abstract void addResume(Resume resume, int index);
+
+    /**
+     * Remove resume from storage
+     *
+     * @param index resume to remove
+     */
+    protected abstract void removeResume(int index);
+
+    /**
+     * @param uuid inputed id name
+     * @return index of array where id = uuid.
+     */
+
+    protected abstract int getIndex(String uuid);
 
     /**
      * Update resume if it founded, else error message
@@ -38,26 +60,19 @@ public abstract class AbstractArrayStorage implements Storage {
      */
 
     public void save(Resume r) {
-        if (size() >= STORAGE_LIMIT) {
+        if (size >= STORAGE_LIMIT) {
             throw new OverflowStorageException(r.getUuid());
         } else {
-            int index = getIndex(r.getUuid());
+            String resumeUuid = r.getUuid();
+            int index = getIndex(resumeUuid);
             if (index > -1) {
-                throw new ExistStorageException(r.getUuid());
+                throw new ExistStorageException(resumeUuid);
             } else {
                 addResume(r, index);
                 size++;
             }
         }
     }
-
-    /**
-     * Add resume to storage
-     *
-     * @param resume resume to add
-     * @param index  resume position in array
-     */
-    public abstract void addResume(Resume resume, int index);
 
     /**
      * Remove resume from array, descrease array size counter
@@ -71,24 +86,10 @@ public abstract class AbstractArrayStorage implements Storage {
             throw new NotExistStorageException(uuid);
         } else {
             removeResume(index);
-            storage[size() - 1] = null;
+            storage[size - 1] = null;
             size--;
         }
     }
-
-    /**
-     * Remove resume from storage
-     *
-     * @param index resume to remove
-     */
-    public abstract void removeResume(int index);
-
-    /**
-     * @param uuid inputed id name
-     * @return index of array where id = uuid.
-     */
-
-    protected abstract int getIndex(String uuid);
 
     /**
      * Clear array. Also reset realSize

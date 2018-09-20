@@ -10,19 +10,22 @@ import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
 
-    public void addResume(Resume r, int index) {
-        index = -(index) - 1;
-        System.arraycopy(storage, index, storage, index + 1, size() - index);
-        storage[index] = r;
+    protected void addResume(Resume r, int index) {
+        int indexInStorage = -(index) - 1;
+        System.arraycopy(storage, indexInStorage, storage, indexInStorage + 1, size - indexInStorage);
+        storage[indexInStorage] = r;
     }
 
-    public void removeResume(int index) {
-        System.arraycopy(storage, index + 1, storage, index, size() - index - 1);
+    protected void removeResume(int index) {
+        int checkLastPosition = size - index - 1;
+        if (checkLastPosition != 0) {
+            System.arraycopy(storage, index + 1, storage, index, size - index - 1);
+        }
     }
 
     protected int getIndex(String uuid) {
         Resume searchKey = new Resume();
         searchKey.setUuid(uuid);
-        return Arrays.binarySearch(storage, 0, size(), searchKey);
+        return Arrays.binarySearch(storage, 0, size, searchKey);
     }
 }
