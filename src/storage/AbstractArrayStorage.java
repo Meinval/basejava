@@ -92,7 +92,7 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     /**
-     * Clear array. Also reset realSize
+     * Clear array. Also reset size counter
      */
 
     public void clear() {
