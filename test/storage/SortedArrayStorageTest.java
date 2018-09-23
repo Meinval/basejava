@@ -1,4 +1,4 @@
-import storage.SortedArrayStorage;
+package storage;
 
 public class SortedArrayStorageTest extends AbstractStorageTest {
     public SortedArrayStorageTest() {
