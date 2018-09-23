@@ -8,6 +8,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import static storage.AbstractArrayStorage.STORAGE_LIMIT;
+
 public abstract class AbstractStorageTest {
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
@@ -19,7 +21,7 @@ public abstract class AbstractStorageTest {
     private Resume resume3 = new Resume(UUID_3);
     private Resume resume4 = new Resume(UUID_4);
 
-    AbstractStorageTest(Storage storage) {
+    protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
 
@@ -97,9 +99,15 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = OverflowStorageException.class)
     public void saveOverflow() throws Exception {
-        for (int i = 3; i < 10000; i++) {
-            storage.save(new Resume("uuid" + (i + 1)));
+        int startIndex = storage.size();
+        try {
+            for (int i = startIndex; i < STORAGE_LIMIT; i++) {
+                storage.save(new Resume("uuid" + (i + 1)));
+            }
+            Assert.fail("Overflow exception not happen");
+        } catch (AssertionError e) {
+            Assert.assertEquals("Overflow exception not happen", e.getMessage());
+            storage.save(new Resume("uuid10001"));
         }
-        storage.save(new Resume("uuid10001"));
     }
 }
