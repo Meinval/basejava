@@ -58,8 +58,8 @@ public abstract class AbstractStorageTest {
     @Test
     public void getAll() throws Exception {
         Assert.assertEquals(3, storage.size());
-        Resume[] expectedSorage = new Resume[]{resume1, resume2, resume3};
-        Assert.assertArrayEquals(expectedSorage, storage.getAll());
+        Resume[] expectedStorage = {resume1, resume2, resume3};
+        Assert.assertArrayEquals(expectedStorage, storage.getAll());
     }
 
     @Test
@@ -86,9 +86,8 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = OverflowStorageException.class)
     public void saveOverflow() throws Exception {
-        int startIndex = storage.size();
         try {
-            for (int i = startIndex; i < STORAGE_LIMIT; i++) {
+            for (int i = storage.size(); i < STORAGE_LIMIT; i++) {
                 storage.save(new Resume("uuid" + (i + "position")));
             }
         } catch (Exception e) {
