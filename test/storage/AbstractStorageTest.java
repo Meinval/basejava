@@ -2,16 +2,13 @@ package storage;
 
 import exception.ExistStorageException;
 import exception.NotExistStorageException;
-import exception.OverflowStorageException;
 import model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static storage.AbstractArrayStorage.STORAGE_LIMIT;
-
 public abstract class AbstractStorageTest {
-    private Storage storage;
+    protected Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
@@ -19,7 +16,7 @@ public abstract class AbstractStorageTest {
     private static final Resume resume1 = new Resume(UUID_1);
     private static final Resume resume2 = new Resume(UUID_2);
     private static final Resume resume3 = new Resume(UUID_3);
-    private static final Resume resume4 = new Resume(UUID_4);
+    protected static final Resume resume4 = new Resume(UUID_4);
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -82,18 +79,6 @@ public abstract class AbstractStorageTest {
     @Test(expected = ExistStorageException.class)
     public void saveAlreadyExist() throws Exception {
         storage.save(resume3);
-    }
-
-    @Test(expected = OverflowStorageException.class)
-    public void saveOverflow() throws Exception {
-        try {
-            for (int i = storage.size(); i < STORAGE_LIMIT; i++) {
-                storage.save(new Resume("uuid" + (i + "position")));
-            }
-        } catch (Exception e) {
-            Assert.fail("Overflow exception not happen");
-        }
-        storage.save(resume4);
     }
 
     @Test(expected = NotExistStorageException.class)
