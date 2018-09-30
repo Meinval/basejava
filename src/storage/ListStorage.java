@@ -4,6 +4,7 @@ import model.Resume;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * List based storage for Resumes
@@ -28,8 +29,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected int getIndex(String uuid) {
-        int index = -1;
+    protected Object getSearchKey(String uuid) {
+        Object index = null;
         for (int i = 0; i < storage.size(); i++) {
             if (storage.get(i).getUuid().equals(uuid)) {
                 index = i;
@@ -39,23 +40,32 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getResume(String uuid, int index) {
-        return storage.get(index);
+    protected Resume getResume(Resume resume, Object searchKey) {
+        return storage.get((int) searchKey);
     }
 
     @Override
-    protected void updateResume(Resume resume, int index) {
-        storage.set(index, resume);
+    protected void updateResume(Resume resume, Object searchKey) {
+        storage.set((int) searchKey, resume);
     }
 
     @Override
-    protected void addResume(Resume resume, int index) {
+    protected void addResume(Resume resume, Object searchKey) {
         storage.add(resume);
     }
 
     @Override
-    protected void removeResume(String uuid, int index) {
-        storage.remove(index);
+    protected void removeResume(Resume resume, Object searchKey) {
+        storage.remove((int) searchKey);
     }
 
+    @Override
+    protected boolean checkExistInStorage(Resume resume, Object searchKey) {
+        return Objects.isNull(searchKey);
+    }
+
+    @Override
+    protected boolean checkNotExistInStorage(Resume resume, Object searchKey) {
+        return Objects.nonNull(searchKey);
+    }
 }

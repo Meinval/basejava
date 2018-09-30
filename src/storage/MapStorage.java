@@ -30,11 +30,11 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected int getIndex(String uuid) {
-        int index = -1;
+    protected Object getSearchKey(String uuid) {
+        Object index = null;
         try {
             if (Objects.nonNull(storage.get(uuid))) {
-                index = 1;
+                index = uuid;
             }
         } catch (Exception e) {
             throw new NotExistStorageException(uuid);
@@ -43,22 +43,32 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getResume(String uuid, int index) {
-        return storage.get(uuid);
+    protected Resume getResume(Resume resume, Object searchKey) {
+        return storage.get(resume.getUuid());
     }
 
     @Override
-    protected void updateResume(Resume r, int index) {
-        storage.replace(r.getUuid(), r);
+    protected void updateResume(Resume resume, Object searchKey) {
+        storage.replace(resume.getUuid(), resume);
     }
 
     @Override
-    protected void addResume(Resume resume, int index) {
+    protected void addResume(Resume resume, Object searchKey) {
         storage.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected void removeResume(String uuid, int index) {
-        storage.remove(uuid);
+    protected void removeResume(Resume resume, Object searchKey) {
+        storage.remove(resume.getUuid());
+    }
+
+    @Override
+    protected boolean checkExistInStorage(Resume resume, Object searchKey) {
+        return Objects.isNull(searchKey);
+    }
+
+    @Override
+    protected boolean checkNotExistInStorage(Resume resume, Object searchKey) {
+        return Objects.nonNull(searchKey);
     }
 }

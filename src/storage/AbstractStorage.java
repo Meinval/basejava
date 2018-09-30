@@ -12,53 +12,58 @@ public abstract class AbstractStorage implements Storage {
 
     public abstract void clear();
 
-    protected abstract int getIndex(String uuid);
+    protected abstract Object getSearchKey(String uuid);
 
-    protected abstract Resume getResume(String uuid, int index);
+    protected abstract Resume getResume(Resume resume, Object searchKey);
 
-    protected abstract void updateResume(Resume resume, int index);
+    protected abstract void updateResume(Resume resume, Object searchKey);
 
-    protected abstract void addResume(Resume resume, int index);
+    protected abstract void addResume(Resume resume, Object searchKey);
 
-    protected abstract void removeResume(String uuid, int index);
+    protected abstract void removeResume(Resume resume, Object searchKey);
+
+    protected abstract boolean checkExistInStorage(Resume resume, Object searchKey);
+
+    protected abstract boolean checkNotExistInStorage(Resume resume, Object searchKey);
 
     @Override
     public void update(Resume r) {
-        int index = getIndex(r.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(r.getUuid());
-        } else {
+        Object index = getSearchKey(r.getUuid());
+        if (checkNotExistInStorage(r, index)) {
             updateResume(r, index);
+        } else {
+            throw new NotExistStorageException(r.getUuid());
         }
     }
 
     @Override
     public void save(Resume r) {
         String resumeUuid = r.getUuid();
-        int index = getIndex(resumeUuid);
-        if (index > -1) {
-            throw new ExistStorageException(resumeUuid);
-        } else {
+        Object index = getSearchKey(resumeUuid);
+        if (checkExistInStorage(r, index)) {
             addResume(r, index);
+        } else {
+            throw new ExistStorageException(r.getUuid());
         }
     }
 
     @Override
     public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
+        Object index = getSearchKey(uuid);
+        if (checkNotExistInStorage(new Resume(uuid), index)) {
+            removeResume(new Resume(uuid), index);
         } else {
-            removeResume(uuid, index);
+            throw new NotExistStorageException(uuid);
         }
     }
 
     @Override
     public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
+        Object index = getSearchKey(uuid);
+        if (checkNotExistInStorage(new Resume(uuid), index)) {
+            return getResume(new Resume(uuid), index);
+        } else {
             throw new NotExistStorageException(uuid);
         }
-        return getResume(uuid, index);
     }
 }
