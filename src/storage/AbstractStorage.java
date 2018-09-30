@@ -12,17 +12,9 @@ public abstract class AbstractStorage implements Storage {
 
     public abstract void clear();
 
-    protected abstract void deleteLastElement();
-
-    protected abstract void increaseStorageSize();
-
-    protected abstract void reduceStorageSize();
-
     protected abstract int getIndex(String uuid);
 
     protected abstract Resume getResume(String uuid, int index);
-
-    protected abstract void checkOverflow(Resume resume);
 
     protected abstract void updateResume(Resume resume, int index);
 
@@ -42,14 +34,12 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void save(Resume r) {
-        checkOverflow(r);
         String resumeUuid = r.getUuid();
         int index = getIndex(resumeUuid);
         if (index > -1) {
             throw new ExistStorageException(resumeUuid);
         } else {
             addResume(r, index);
-            increaseStorageSize();
         }
     }
 
@@ -60,8 +50,6 @@ public abstract class AbstractStorage implements Storage {
             throw new NotExistStorageException(uuid);
         } else {
             removeResume(uuid, index);
-            deleteLastElement();
-            reduceStorageSize();
         }
     }
 

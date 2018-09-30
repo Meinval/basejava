@@ -30,26 +30,6 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void deleteLastElement() {
-
-    }
-
-    @Override
-    protected void increaseStorageSize() {
-
-    }
-
-    @Override
-    protected void reduceStorageSize() {
-
-    }
-
-    @Override
-    protected void checkOverflow(Resume resume) {
-
-    }
-
-    @Override
     protected int getIndex(String uuid) {
         int index = -1;
         try {

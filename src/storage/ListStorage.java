@@ -28,26 +28,6 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void deleteLastElement() {
-
-    }
-
-    @Override
-    protected void increaseStorageSize() {
-
-    }
-
-    @Override
-    protected void reduceStorageSize() {
-
-    }
-
-    @Override
-    protected void checkOverflow(Resume resume) {
-
-    }
-
-    @Override
     protected int getIndex(String uuid) {
         int index = -1;
         for (int i = 0; i < storage.size(); i++) {

@@ -11,14 +11,14 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void addResume(Resume r, int index) {
+    protected void addResumeToArray(Resume resume, int index) {
         int indexInStorage = -(index) - 1;
         System.arraycopy(storage, indexInStorage, storage, indexInStorage + 1, size - indexInStorage);
-        storage[indexInStorage] = r;
+        storage[indexInStorage] = resume;
     }
 
     @Override
-    protected void removeResume(String uuid, int index) {
+    protected void removeResumeFromArray(int index) {
         int lengthSegmentToMove = size - index - 1;
         if (lengthSegmentToMove != 0) {
             System.arraycopy(storage, index + 1, storage, index, lengthSegmentToMove);
