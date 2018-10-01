@@ -30,11 +30,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected Object getSearchKey(String uuid) {
-/*        Object searchKey = null;
-            if (Objects.nonNull(storage.get(uuid))) {*/
         return uuid;
-/*            }
-        return searchKey;*/
     }
 
     @Override
