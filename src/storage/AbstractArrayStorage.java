@@ -35,7 +35,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getResume(Resume resume, Object searchKey) {
+    protected Resume getResume(Object searchKey) {
         return storage[(int) searchKey];
     }
 
@@ -46,43 +46,22 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected void addResume(Resume resume, Object searchKey) {
-        checkOverflow(resume);
-        addResumeToArray(resume, (int) searchKey);
-        increaseStorageSize();
-    }
-
-    @Override
-    protected void removeResume(Resume resume, Object searchKey) {
-        removeResumeFromArray((int) searchKey);
-        deleteLastElement();
-        reduceStorageSize();
-    }
-
-    @Override
-    protected boolean checkExistInStorage(Resume resume, Object searchKey) {
-        return (int) searchKey <= -1;
-    }
-
-    @Override
-    protected boolean checkNotExistInStorage(Resume resume, Object searchKey) {
-        return (int) searchKey >= 0;
-    }
-
-    private void deleteLastElement() {
-        storage[size - 1] = null;
-    }
-
-    private void increaseStorageSize() {
-        size++;
-    }
-
-    private void reduceStorageSize() {
-        size--;
-    }
-
-    private void checkOverflow(Resume resume) {
         if (size >= STORAGE_LIMIT) {
             throw new OverflowStorageException(resume.getUuid());
         }
+        addResumeToArray(resume, (int) searchKey);
+        size++;
+    }
+
+    @Override
+    protected void removeResume(Object searchKey) {
+        removeResumeFromArray((int) searchKey);
+        storage[size - 1] = null;
+        size--;
+    }
+
+    @Override
+    protected boolean checkNotExistInStorage(Object searchKey) {
+        return (int) searchKey <= -1;
     }
 }

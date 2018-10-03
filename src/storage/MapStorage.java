@@ -1,6 +1,5 @@
 package storage;
 
-import exception.NotExistStorageException;
 import model.Resume;
 
 import java.util.LinkedHashMap;
@@ -31,20 +30,12 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected Object getSearchKey(String uuid) {
-        Object index = null;
-        try {
-            if (Objects.nonNull(storage.get(uuid))) {
-                index = uuid;
-            }
-        } catch (Exception e) {
-            throw new NotExistStorageException(uuid);
-        }
-        return index;
+        return uuid;
     }
 
     @Override
-    protected Resume getResume(Resume resume, Object searchKey) {
-        return storage.get(resume.getUuid());
+    protected Resume getResume(Object searchKey) {
+        return storage.get(searchKey);
     }
 
     @Override
@@ -58,17 +49,12 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void removeResume(Resume resume, Object searchKey) {
-        storage.remove(resume.getUuid());
+    protected void removeResume(Object searchKey) {
+        storage.remove(searchKey);
     }
 
     @Override
-    protected boolean checkExistInStorage(Resume resume, Object searchKey) {
-        return Objects.isNull(searchKey);
-    }
-
-    @Override
-    protected boolean checkNotExistInStorage(Resume resume, Object searchKey) {
-        return Objects.nonNull(searchKey);
+    protected boolean checkNotExistInStorage(Object searchKey) {
+        return Objects.isNull(storage.get(searchKey));
     }
 }
