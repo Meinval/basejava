@@ -4,12 +4,8 @@ import model.Resume;
 
 import java.util.*;
 
-/**
- * Map based storage for Resumes
- */
-
-public class MapStorage extends AbstractStorage {
-    protected Map<String, Resume> storage = new LinkedHashMap<>();
+public class MapUuidStorage extends AbstractStorage implements Storage {
+    private Map<String, Resume> storage = new HashMap<>();
 
     @Override
     public int size() {
@@ -27,8 +23,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getSearchKey(String uuid) {
-        return uuid;
+    protected Object getSearchKey(String fullName) {
+        return fullName;
     }
 
     @Override
@@ -38,12 +34,12 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void updateResume(Resume resume, Object searchKey) {
-        storage.replace(resume.getUuid(), resume);
+        storage.replace(resume.getFullName(), resume);
     }
 
     @Override
     protected void addResume(Resume resume, Object searchKey) {
-        storage.put(resume.getUuid(), resume);
+        storage.put(resume.getFullName(), resume);
     }
 
     @Override

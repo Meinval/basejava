@@ -4,11 +4,14 @@ import exception.ExistStorageException;
 import exception.NotExistStorageException;
 import model.Resume;
 
+import java.util.Collections;
+import java.util.List;
+
 public abstract class AbstractStorage implements Storage {
 
     public abstract int size();
 
-    public abstract Resume[] getAll();
+    public abstract List<Resume> getListOfResume();
 
     public abstract void clear();
 
@@ -63,5 +66,12 @@ public abstract class AbstractStorage implements Storage {
         } else {
             throw new NotExistStorageException(uuid);
         }
+    }
+
+    @Override
+    public List<Resume> getAllSorted() {
+        List<Resume> list = getListOfResume();
+        Collections.sort(list);
+        return list;
     }
 }

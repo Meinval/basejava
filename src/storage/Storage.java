@@ -2,6 +2,8 @@ package storage;
 
 import model.Resume;
 
+import java.util.List;
+
 public interface Storage {
 
     void update(Resume r);
@@ -12,9 +14,9 @@ public interface Storage {
 
     void clear();
 
-    Resume[] getAll();
-
     Resume get(String uuid);
+
+    List<Resume> getAllSorted();
 
     int size();
 }
