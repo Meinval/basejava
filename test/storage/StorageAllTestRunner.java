@@ -11,5 +11,5 @@ import org.junit.runners.Suite;
         MapStorageTest.class,
         MapUuidStorageTest.class
 })
-public class StorageTest {
+public class StorageAllTestRunner {
 }

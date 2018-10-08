@@ -7,23 +7,19 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
     protected Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
+    protected static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
-    private static final String FULL_NAME_1 = "Иванов Иван Иванович";
-    private static final String FULL_NAME_2 = "Петров Петр Петрович";
-    private static final String FULL_NAME_3 = "Александров Александр Александрович";
-    private static final String FULL_NAME_4 = "Дмитриев Дмитрий Дмитриевич";
-    private static final Resume resume1 = new Resume(UUID_1, FULL_NAME_1);
-    private static final Resume resume2 = new Resume(UUID_2, FULL_NAME_2);
-    private static final Resume resume3 = new Resume(UUID_3, FULL_NAME_3);
-    protected static final Resume resume4 = new Resume(UUID_4, FULL_NAME_4);
+    private static final Resume resume1 = new Resume(UUID_1, "Иванов Иван Иванович");
+    protected static final Resume resume2 = new Resume(UUID_2, "Петров Петр Петрович");
+    protected static final Resume resume3 = new Resume(UUID_3, "Александров Александр Александрович");
+    protected static final Resume resume4 = new Resume(UUID_4, "Дмитриев Дмитрий Дмитриевич");
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -50,22 +46,21 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() throws Exception {
-        storage.update(resume3);
-        Assert.assertEquals(resume3, storage.get(UUID_3));
+        Resume resume = new Resume("uuid3", "Киселев Кисель Киселевич");
+        storage.update(resume);
+        Assert.assertEquals(resume, storage.get(UUID_3));
     }
 
     @Test(expected = NotExistStorageException.class)
     public void updateNotExist() throws Exception {
+        resume4.setFullName("Киселев Кисель Киселевич");
         storage.update(resume4);
     }
 
     @Test
     public void getAllSorted() throws Exception {
         Assert.assertEquals(3, storage.size());
-        List<Resume> expectedStorage = new ArrayList<>();
-        expectedStorage.add(resume3);
-        expectedStorage.add(resume1);
-        expectedStorage.add(resume2);
+        List<Resume> expectedStorage = Arrays.asList(resume3, resume1, resume2);
         Assert.assertEquals(expectedStorage, storage.getAllSorted());
     }
 

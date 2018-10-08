@@ -4,16 +4,12 @@ import exception.ExistStorageException;
 import exception.NotExistStorageException;
 import model.Resume;
 
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-public abstract class AbstractStorage implements Storage {
-
-    public abstract int size();
+public abstract class AbstractStorage implements Storage, Comparator<Resume> {
 
     public abstract List<Resume> getListOfResume();
-
-    public abstract void clear();
 
     protected abstract Object getSearchKey(String uuid);
 
@@ -28,50 +24,54 @@ public abstract class AbstractStorage implements Storage {
     protected abstract boolean checkNotExistInStorage(Object searchKey);
 
     @Override
-    public void update(Resume r) {
-        Object searchKey = getSearchKey(r.getUuid());
-        if (!checkNotExistInStorage(searchKey)) {
-            updateResume(r, searchKey);
-        } else {
-            throw new NotExistStorageException(r.getUuid());
-        }
+    public void update(Resume resume) {
+        updateResume(resume, checkExistence(resume.getUuid()));
     }
 
     @Override
-    public void save(Resume r) {
-        String resumeUuid = r.getUuid();
-        Object searchKey = getSearchKey(resumeUuid);
+    public void save(Resume resume) {
+        Object searchKey = getSearchKey(resume.getUuid());
         if (checkNotExistInStorage(searchKey)) {
-            addResume(r, searchKey);
+            addResume(resume, searchKey);
         } else {
-            throw new ExistStorageException(r.getUuid());
+            throw new ExistStorageException(resume.getUuid());
         }
     }
 
     @Override
     public void delete(String uuid) {
-        Object searchKey = getSearchKey(uuid);
-        if (!checkNotExistInStorage(searchKey)) {
-            removeResume(searchKey);
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
+        removeResume(checkExistence(uuid));
     }
 
     @Override
     public Resume get(String uuid) {
-        Object searchKey = getSearchKey(uuid);
-        if (!checkNotExistInStorage(searchKey)) {
-            return getResume(searchKey);
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
+        return getResume(checkExistence(uuid));
     }
 
     @Override
     public List<Resume> getAllSorted() {
         List<Resume> list = getListOfResume();
-        Collections.sort(list);
+        list.sort(Comparator.comparing(Resume::getFullName));
         return list;
+    }
+
+    @Override
+    public int compare(Resume o1, Resume o2) {
+        int a = o1.getFullName().compareTo(o2.getFullName());
+        int b = o1.getUuid().compareTo(o2.getUuid());
+        if (a >= 0) {
+            return b;
+        } else {
+            return a;
+        }
+    }
+
+    private Object checkExistence(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (checkNotExistInStorage(searchKey)) {
+            throw new NotExistStorageException(uuid);
+        } else {
+            return searchKey;
+        }
     }
 }

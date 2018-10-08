@@ -1,4 +1,4 @@
-package ru.javawebinar.basejava;
+
 
 import model.Resume;
 
@@ -36,9 +36,9 @@ public class MainCollections {
 
         Iterator<Resume> iterator = collection.iterator();
         while (iterator.hasNext()) {
-            Resume r = iterator.next();
-            System.out.println(r);
-            if (Objects.equals(r.getUuid(), UUID_1)) {
+            Resume resume = iterator.next();
+            System.out.println(resume);
+            if (Objects.equals(resume.getUuid(), UUID_1)) {
                 iterator.remove();
             }
         }
