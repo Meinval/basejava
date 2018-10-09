@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public abstract class AbstractStorage implements Storage, Comparator<Resume> {
+    private Comparator<Resume> RESUME_COMPARATOR = (Resume o1, Resume o2) -> compare(o1, o2);
 
     public abstract List<Resume> getListOfResume();
 
@@ -46,7 +47,7 @@ public abstract class AbstractStorage implements Storage, Comparator<Resume> {
     @Override
     public List<Resume> getAllSorted() {
         List<Resume> list = getListOfResume();
-        list.sort(this);
+        list.sort(RESUME_COMPARATOR);
         return list;
     }
 

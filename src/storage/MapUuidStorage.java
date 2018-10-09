@@ -4,8 +4,8 @@ import model.Resume;
 
 import java.util.*;
 
-public class MapUuidStorage extends AbstractStorage implements Storage {
-    private Map<String, Resume> storage = new HashMap<>();
+public class MapUuidStorage extends AbstractStorage {
+    private Map<Integer, Resume> storage = new HashMap<>();
 
     @Override
     public int size() {
@@ -23,8 +23,14 @@ public class MapUuidStorage extends AbstractStorage implements Storage {
     }
 
     @Override
-    protected Object getSearchKey(String fullName) {
-        return fullName;
+    protected Object getSearchKey(String uuid) {
+        for (Object o : storage.entrySet()) {
+            Map.Entry pair = (Map.Entry) o;
+            if (((Resume) pair.getValue()).getUuid().equals(uuid)) {
+                return pair.getKey();
+            }
+        }
+        return null;
     }
 
     @Override
@@ -33,23 +39,13 @@ public class MapUuidStorage extends AbstractStorage implements Storage {
     }
 
     @Override
-    public void update(Resume resume) {
-        updateResume(resume, checkResumeNotExistence(resume.getFullName()));
-    }
-
-    @Override
-    public void save(Resume resume) {
-        addResume(resume, checkResumeExistence(resume.getFullName()));
-    }
-
-    @Override
     protected void updateResume(Resume resume, Object searchKey) {
-        storage.replace(resume.getFullName(), resume);
+        storage.replace(resume.hashCode(), resume);
     }
 
     @Override
     protected void addResume(Resume resume, Object searchKey) {
-        storage.put(resume.getFullName(), resume);
+        storage.put(resume.hashCode(), resume);
     }
 
     @Override
