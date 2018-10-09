@@ -2,9 +2,9 @@ package storage;
 
 import exception.OverflowStorageException;
 import model.Resume;
-import org.junit.Assert;
 import org.junit.Test;
 
+import static org.junit.Assert.fail;
 import static storage.AbstractArrayStorage.STORAGE_LIMIT;
 
 public class AbstractArrayStorageTest extends AbstractStorageTest {
@@ -19,7 +19,7 @@ public class AbstractArrayStorageTest extends AbstractStorageTest {
                 storage.save(new Resume("uuid" + (i + "position"), "fio" + (i + "position")));
             }
         } catch (Exception e) {
-            Assert.fail("Overflow exception not happen");
+            fail("Overflow exception not happen");
         }
         storage.save(resume4);
     }

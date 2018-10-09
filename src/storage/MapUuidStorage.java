@@ -1,7 +1,5 @@
 package storage;
 
-import exception.ExistStorageException;
-import exception.NotExistStorageException;
 import model.Resume;
 
 import java.util.*;
@@ -36,23 +34,12 @@ public class MapUuidStorage extends AbstractStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        Object searchKey = getSearchKey(resume.getFullName());
-        if (!checkNotExistInStorage(searchKey)) {
-            updateResume(resume, searchKey);
-        } else {
-            throw new NotExistStorageException(resume.getUuid());
-        }
+        updateResume(resume, checkResumeNotExistence(resume.getFullName()));
     }
 
     @Override
     public void save(Resume resume) {
-        String resumeUuid = resume.getFullName();
-        Object searchKey = getSearchKey(resumeUuid);
-        if (checkNotExistInStorage(searchKey)) {
-            addResume(resume, searchKey);
-        } else {
-            throw new ExistStorageException(resume.getUuid());
-        }
+        addResume(resume, checkResumeExistence(resume.getFullName()));
     }
 
     @Override

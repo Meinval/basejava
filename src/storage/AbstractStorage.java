@@ -25,51 +25,49 @@ public abstract class AbstractStorage implements Storage, Comparator<Resume> {
 
     @Override
     public void update(Resume resume) {
-        updateResume(resume, checkExistence(resume.getUuid()));
+        updateResume(resume, checkResumeNotExistence(resume.getUuid()));
     }
 
     @Override
     public void save(Resume resume) {
-        Object searchKey = getSearchKey(resume.getUuid());
-        if (checkNotExistInStorage(searchKey)) {
-            addResume(resume, searchKey);
-        } else {
-            throw new ExistStorageException(resume.getUuid());
-        }
+        addResume(resume, checkResumeExistence(resume.getUuid()));
     }
 
     @Override
     public void delete(String uuid) {
-        removeResume(checkExistence(uuid));
+        removeResume(checkResumeNotExistence(uuid));
     }
 
     @Override
     public Resume get(String uuid) {
-        return getResume(checkExistence(uuid));
+        return getResume(checkResumeNotExistence(uuid));
     }
 
     @Override
     public List<Resume> getAllSorted() {
         List<Resume> list = getListOfResume();
-        list.sort(Comparator.comparing(Resume::getFullName));
+        list.sort(this);
         return list;
     }
 
     @Override
     public int compare(Resume o1, Resume o2) {
-        int a = o1.getFullName().compareTo(o2.getFullName());
-        int b = o1.getUuid().compareTo(o2.getUuid());
-        if (a >= 0) {
-            return b;
-        } else {
-            return a;
-        }
+        return (o1.getFullName().compareTo(o2.getFullName()) >= 0) ? o1.getUuid().compareTo(o2.getUuid()) : o1.getFullName().compareTo(o2.getFullName());
     }
 
-    private Object checkExistence(String uuid) {
+    public Object checkResumeNotExistence(String uuid) {
         Object searchKey = getSearchKey(uuid);
         if (checkNotExistInStorage(searchKey)) {
             throw new NotExistStorageException(uuid);
+        } else {
+            return searchKey;
+        }
+    }
+
+    public Object checkResumeExistence(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (!checkNotExistInStorage(searchKey)) {
+            throw new ExistStorageException(uuid);
         } else {
             return searchKey;
         }
