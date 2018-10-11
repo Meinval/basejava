@@ -5,7 +5,7 @@ import model.Resume;
 import java.util.*;
 
 public class MapUuidStorage extends AbstractStorage {
-    private Map<Integer, Resume> storage = new HashMap<>();
+    private Map<String, Resume> storage = new HashMap<>();
 
     @Override
     public int size() {
@@ -27,7 +27,7 @@ public class MapUuidStorage extends AbstractStorage {
         for (Object o : storage.entrySet()) {
             Map.Entry pair = (Map.Entry) o;
             if (((Resume) pair.getValue()).getUuid().equals(uuid)) {
-                return pair.getKey();
+                return pair.getValue();
             }
         }
         return null;
@@ -35,26 +35,30 @@ public class MapUuidStorage extends AbstractStorage {
 
     @Override
     protected Resume getResume(Object searchKey) {
-        return storage.get(searchKey);
+        return (Resume) searchKey;
     }
 
     @Override
     protected void updateResume(Resume resume, Object searchKey) {
-        storage.replace(resume.hashCode(), resume);
+        storage.replace(resume.getUuid(), resume);
     }
 
     @Override
     protected void addResume(Resume resume, Object searchKey) {
-        storage.put(resume.hashCode(), resume);
+        storage.put(resume.getUuid(), resume);
     }
 
     @Override
     protected void removeResume(Object searchKey) {
-        storage.remove(searchKey);
+        storage.remove(((Resume) searchKey).getUuid());
     }
 
     @Override
     protected boolean checkNotExistInStorage(Object searchKey) {
-        return Objects.isNull(storage.get(searchKey));
+        if (Objects.isNull(searchKey)) {
+            return true;
+        } else {
+            return Objects.isNull(storage.get(((Resume) searchKey).getUuid()));
+        }
     }
 }
