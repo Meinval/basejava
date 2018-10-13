@@ -4,7 +4,7 @@ import model.Resume;
 
 import java.util.*;
 
-public class MapUuidStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage {
     private Map<String, Resume> storage = new HashMap<>();
 
     @Override
@@ -24,13 +24,7 @@ public class MapUuidStorage extends AbstractStorage {
 
     @Override
     protected Object getSearchKey(String uuid) {
-        for (Object o : storage.entrySet()) {
-            Map.Entry pair = (Map.Entry) o;
-            if (((Resume) pair.getValue()).getUuid().equals(uuid)) {
-                return pair.getValue();
-            }
-        }
-        return null;
+        return storage.get(uuid);
     }
 
     @Override
@@ -55,10 +49,6 @@ public class MapUuidStorage extends AbstractStorage {
 
     @Override
     protected boolean checkNotExistInStorage(Object searchKey) {
-        if (Objects.isNull(searchKey)) {
-            return true;
-        } else {
-            return Objects.isNull(storage.get(((Resume) searchKey).getUuid()));
-        }
+        return Objects.isNull(searchKey);
     }
 }

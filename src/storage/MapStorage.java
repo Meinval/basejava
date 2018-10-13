@@ -2,7 +2,10 @@ package storage;
 
 import model.Resume;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Map based storage for Resumes
@@ -53,6 +56,6 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected boolean checkNotExistInStorage(Object searchKey) {
-        return Objects.isNull(storage.get(searchKey));
+        return !storage.containsKey(searchKey);
     }
 }
