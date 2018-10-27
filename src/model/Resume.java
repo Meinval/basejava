@@ -11,6 +11,13 @@ public class Resume {
     // Unique identifier
     private String uuid;
     private String fullName;
+    private ContractInfo contactInfoSection;
+    private TextSection objectiveSection;
+    private TextSection personalSection;
+    private TextListSection achievementSection;
+    private TextListSection qualificationsSection;
+    private TextListSection experienceSection;
+    private TextListSection educationSection;
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -57,5 +64,61 @@ public class Resume {
                 "uuid='" + uuid + '\'' +
                 ", fullName='" + fullName + '\'' +
                 '}';
+    }
+
+    public ContractInfo getContactInfoSection() {
+        return contactInfoSection;
+    }
+
+    public void setContactInfoSection(ContractInfo contactInfoSection) {
+        this.contactInfoSection = contactInfoSection;
+    }
+
+    public TextSection getObjectiveSection() {
+        return objectiveSection;
+    }
+
+    public void setObjectiveSection(TextSection objectiveSection) {
+        this.objectiveSection = objectiveSection;
+    }
+
+    public TextSection getPersonalSection() {
+        return personalSection;
+    }
+
+    public void setPersonalSection(TextSection personalSection) {
+        this.personalSection = personalSection;
+    }
+
+    public TextListSection getAchievementSection() {
+        return achievementSection;
+    }
+
+    public void setAchievementSection(TextListSection achievementSection) {
+        this.achievementSection = achievementSection;
+    }
+
+    public TextListSection getQualificationsSection() {
+        return qualificationsSection;
+    }
+
+    public void setQualificationsSection(TextListSection qualificationsSection) {
+        this.qualificationsSection = qualificationsSection;
+    }
+
+    public TextListSection getExperienceSection() {
+        return experienceSection;
+    }
+
+    public void setExperienceSection(TextListSection experienceSection) {
+        this.experienceSection = experienceSection;
+    }
+
+    public TextListSection getEducationSection() {
+        return educationSection;
+    }
+
+    public void setEducationSection(TextListSection educationSection) {
+        this.educationSection = educationSection;
     }
 }
