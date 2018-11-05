@@ -1,37 +1,25 @@
 package model;
 
-public class ResumeRow {
+public class TableText {
     private String rowHeader;
     private String dateStart;
     private String dateEnd;
     private String boldText;
     private String text;
-    private boolean needMark;
 
-    public ResumeRow(String text) {
-        this.text = text;
-    }
-
-    public ResumeRow(String text, boolean needMark) {
-        this.text = text;
-        this.needMark = needMark;
-    }
-
-    public ResumeRow(String rowHeader, String dateStart, String dateEnd, String boldText, String text, Boolean needMark) {
+    public TableText(String rowHeader, String dateStart, String dateEnd, String boldText, String text) {
         this.rowHeader = rowHeader;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
         this.boldText = boldText;
         this.text = text;
-        this.needMark = needMark;
     }
 
-    public ResumeRow(String rowHeader, String dateStart, String dateEnd, String boldText, Boolean needMark) {
+    public TableText(String rowHeader, String dateStart, String dateEnd, String boldText) {
         this.rowHeader = rowHeader;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
         this.boldText = boldText;
-        this.needMark = needMark;
     }
 
     public String getRowHeader() {
@@ -72,13 +60,5 @@ public class ResumeRow {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public boolean isNeedMark() {
-        return needMark;
-    }
-
-    public void setNeedMark(boolean needMark) {
-        this.needMark = needMark;
     }
 }

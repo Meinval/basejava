@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -12,12 +13,7 @@ public class Resume {
     private String uuid;
     private String fullName;
     private ContractInfo contactInfoSection;
-    private TextSection objectiveSection;
-    private TextSection personalSection;
-    private TextListSection achievementSection;
-    private TextListSection qualificationsSection;
-    private TextListSection experienceSection;
-    private TextListSection educationSection;
+    private ArrayList<AbstractSection> linkedSectionList;
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -74,51 +70,11 @@ public class Resume {
         this.contactInfoSection = contactInfoSection;
     }
 
-    public TextSection getObjectiveSection() {
-        return objectiveSection;
+    public ArrayList<AbstractSection> getLinkedSectionList() {
+        return linkedSectionList;
     }
 
-    public void setObjectiveSection(TextSection objectiveSection) {
-        this.objectiveSection = objectiveSection;
-    }
-
-    public TextSection getPersonalSection() {
-        return personalSection;
-    }
-
-    public void setPersonalSection(TextSection personalSection) {
-        this.personalSection = personalSection;
-    }
-
-    public TextListSection getAchievementSection() {
-        return achievementSection;
-    }
-
-    public void setAchievementSection(TextListSection achievementSection) {
-        this.achievementSection = achievementSection;
-    }
-
-    public TextListSection getQualificationsSection() {
-        return qualificationsSection;
-    }
-
-    public void setQualificationsSection(TextListSection qualificationsSection) {
-        this.qualificationsSection = qualificationsSection;
-    }
-
-    public TextListSection getExperienceSection() {
-        return experienceSection;
-    }
-
-    public void setExperienceSection(TextListSection experienceSection) {
-        this.experienceSection = experienceSection;
-    }
-
-    public TextListSection getEducationSection() {
-        return educationSection;
-    }
-
-    public void setEducationSection(TextListSection educationSection) {
-        this.educationSection = educationSection;
+    public void setLinkedSectionList(ArrayList<AbstractSection> linkedSectionList) {
+        this.linkedSectionList = linkedSectionList;
     }
 }
