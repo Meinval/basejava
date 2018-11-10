@@ -1,6 +1,7 @@
 package model;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -12,8 +13,8 @@ public class Resume {
     // Unique identifier
     private String uuid;
     private String fullName;
-    private ContractInfo contactInfoSection;
-    private ArrayList<AbstractSection> linkedSectionList;
+    private LinkedHashMap<ContactType, AbstractSection> contactsMap;
+    private LinkedHashMap<SectionType, AbstractSection> sectionsMap;
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -62,19 +63,19 @@ public class Resume {
                 '}';
     }
 
-    public ContractInfo getContactInfoSection() {
-        return contactInfoSection;
+    public HashMap<ContactType, AbstractSection> getContactsMap() {
+        return contactsMap;
     }
 
-    public void setContactInfoSection(ContractInfo contactInfoSection) {
-        this.contactInfoSection = contactInfoSection;
+    public void setContactsMap(LinkedHashMap<ContactType, AbstractSection> contactsMap) {
+        this.contactsMap = contactsMap;
     }
 
-    public ArrayList<AbstractSection> getLinkedSectionList() {
-        return linkedSectionList;
+    public LinkedHashMap<SectionType, AbstractSection> getSectionsMap() {
+        return sectionsMap;
     }
 
-    public void setLinkedSectionList(ArrayList<AbstractSection> linkedSectionList) {
-        this.linkedSectionList = linkedSectionList;
+    public void setSectionsMap(LinkedHashMap<SectionType, AbstractSection> sectionsMap) {
+        this.sectionsMap = sectionsMap;
     }
 }

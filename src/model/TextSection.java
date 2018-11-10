@@ -2,13 +2,12 @@ package model;
 
 public class TextSection extends AbstractSection {
 
-    public TextSection(SectionType sectionType, Object content) {
-        super(sectionType, content);
+    public TextSection(Object content) {
+        super(content);
     }
 
     @Override
     public void print() {
-        super.print();
         System.out.println((String) content);
     }
 }

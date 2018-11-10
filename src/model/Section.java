@@ -1,10 +1,6 @@
 package model;
 
-public interface Section<T> {
-
-    void update(SectionType sectionType, T content);
+public interface Section {
 
     void print();
-
-
 }

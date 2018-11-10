@@ -1,22 +1,27 @@
 package model;
 
+import java.util.Objects;
+
 public abstract class AbstractSection implements Section {
-    private SectionType sectionType;
     Object content;
 
-    public AbstractSection(SectionType sectionType, Object content) {
-        this.sectionType = sectionType;
+    public AbstractSection(Object content) {
         this.content = content;
     }
 
     @Override
-    public void update(SectionType sectionType, Object content) {
-        this.sectionType = sectionType;
-        this.content = content;
+    public abstract void print();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AbstractSection that = (AbstractSection) o;
+        return Objects.equals(content, that.content);
     }
 
     @Override
-    public void print() {
-        System.out.println(sectionType.getTitle());
+    public int hashCode() {
+        return Objects.hash(content);
     }
 }

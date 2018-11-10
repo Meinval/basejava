@@ -1,13 +1,17 @@
 package model;
 
-public class TableText {
+public class RowText {
     private String rowHeader;
     private String dateStart;
     private String dateEnd;
     private String boldText;
     private String text;
 
-    public TableText(String rowHeader, String dateStart, String dateEnd, String boldText, String text) {
+    public RowText(String text) {
+        this.text = text;
+    }
+
+    public RowText(String rowHeader, String dateStart, String dateEnd, String boldText, String text) {
         this.rowHeader = rowHeader;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
@@ -15,7 +19,7 @@ public class TableText {
         this.text = text;
     }
 
-    public TableText(String rowHeader, String dateStart, String dateEnd, String boldText) {
+    public RowText(String rowHeader, String dateStart, String dateEnd, String boldText) {
         this.rowHeader = rowHeader;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;

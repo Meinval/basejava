@@ -5,25 +5,24 @@ import java.util.Objects;
 
 public class TableListSection extends AbstractSection {
 
-    public TableListSection(SectionType sectionType, Object content) {
-        super(sectionType, content);
+    public TableListSection(ArrayList<RowText> content) {
+        super(content);
     }
 
     @Override
     public void print() {
-        super.print();
-        for (TableText tableText : (ArrayList<TableText>) content) {
-            if (Objects.nonNull(tableText.getRowHeader())) {
-                System.out.println(tableText.getRowHeader());
+        for (RowText rowText : (ArrayList<RowText>) content) {
+            if (Objects.nonNull(rowText.getRowHeader())) {
+                System.out.println(rowText.getRowHeader());
             }
-            if (Objects.nonNull(tableText.getDateStart())) {
-                System.out.println(tableText.getDateStart() + " - " + tableText.getDateEnd());
+            if (Objects.nonNull(rowText.getDateStart())) {
+                System.out.println(rowText.getDateStart() + " - " + rowText.getDateEnd());
             }
-            if (Objects.nonNull(tableText.getBoldText())) {
-                System.out.println(tableText.getBoldText());
+            if (Objects.nonNull(rowText.getBoldText())) {
+                System.out.println(rowText.getBoldText());
             }
-            if (Objects.nonNull(tableText.getText())) {
-                System.out.println(tableText.getText());
+            if (Objects.nonNull(rowText.getText())) {
+                System.out.println(rowText.getText());
             }
         }
     }
