@@ -1,7 +1,7 @@
 package model;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -13,8 +13,8 @@ public class Resume {
     // Unique identifier
     private String uuid;
     private String fullName;
-    private LinkedHashMap<ContactType, AbstractSection> contactsMap;
-    private LinkedHashMap<SectionType, AbstractSection> sectionsMap;
+    private Map<ContactType, String> contactsMap = new EnumMap<>(ContactType.class);
+    private Map<SectionType, AbstractSection> sectionsMap = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -41,6 +41,22 @@ public class Resume {
         this.fullName = fullName;
     }
 
+    public Map<ContactType, String> getContactsMap() {
+        return contactsMap;
+    }
+
+    public void setContactsMap(Map<ContactType, String> contactsMap) {
+        this.contactsMap = contactsMap;
+    }
+
+    public Map<SectionType, AbstractSection> getSectionsMap() {
+        return sectionsMap;
+    }
+
+    public void setSectionsMap(Map<SectionType, AbstractSection> sectionsMap) {
+        this.sectionsMap = sectionsMap;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -60,22 +76,8 @@ public class Resume {
         return "Resume{" +
                 "uuid='" + uuid + '\'' +
                 ", fullName='" + fullName + '\'' +
+                ", contactsMap=" + contactsMap +
+                ", sectionsMap=" + sectionsMap +
                 '}';
-    }
-
-    public HashMap<ContactType, AbstractSection> getContactsMap() {
-        return contactsMap;
-    }
-
-    public void setContactsMap(LinkedHashMap<ContactType, AbstractSection> contactsMap) {
-        this.contactsMap = contactsMap;
-    }
-
-    public LinkedHashMap<SectionType, AbstractSection> getSectionsMap() {
-        return sectionsMap;
-    }
-
-    public void setSectionsMap(LinkedHashMap<SectionType, AbstractSection> sectionsMap) {
-        this.sectionsMap = sectionsMap;
     }
 }
