@@ -63,21 +63,29 @@ public class Resume {
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
         return Objects.equals(uuid, resume.uuid) &&
-                Objects.equals(fullName, resume.fullName);
+                Objects.equals(fullName, resume.fullName) &&
+                Objects.equals(contactsMap, resume.contactsMap) &&
+                Objects.equals(sectionsMap, resume.sectionsMap);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, fullName);
+        return Objects.hash(uuid, fullName, contactsMap, sectionsMap);
     }
 
     @Override
     public String toString() {
-        return "Resume{" +
-                "uuid='" + uuid + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", contactsMap=" + contactsMap +
-                ", sectionsMap=" + sectionsMap +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append(uuid).append("\n");
+        sb.append(fullName).append("\n");
+        for (Object o : contactsMap.entrySet()) {
+            Map.Entry entry = (Map.Entry) o;
+            sb.append(((ContactType) entry.getKey()).getTitle()).append(":").append(entry.getValue().toString()).append("\n");
+        }
+        for (Object o : sectionsMap.entrySet()) {
+            Map.Entry entry = (Map.Entry) o;
+            sb.append(((SectionType) entry.getKey()).getTitle()).append("\n").append(entry.getValue().toString()).append("\n");
+        }
+        return sb.toString();
     }
 }

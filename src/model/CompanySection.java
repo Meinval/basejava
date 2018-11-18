@@ -33,8 +33,10 @@ public class CompanySection extends AbstractSection {
 
     @Override
     public String toString() {
-        return "CompanySection{" +
-                "companies=" + companies +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        for (Company s : companies) {
+            sb.append(s.toString()).append("\n");
+        }
+        return sb.toString();
     }
 }

@@ -33,8 +33,10 @@ public class TextListSection extends AbstractSection {
 
     @Override
     public String toString() {
-        return "TextListSection{" +
-                "lines=" + lines +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        for (String s : lines) {
+            sb.append(s).append("\n");
+        }
+        return sb.toString();
     }
 }
