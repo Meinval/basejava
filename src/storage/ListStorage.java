@@ -19,7 +19,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getListOfResume() {
+    public List<Resume> doCopyAll() {
         return new ArrayList<>(storage);
     }
 
@@ -40,27 +40,27 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getResume(Object searchKey) {
+    protected Resume doGet(Object searchKey) {
         return storage.get((int) searchKey);
     }
 
     @Override
-    protected void updateResume(Resume resume, Object searchKey) {
+    protected void doUpdate(Resume resume, Object searchKey) {
         storage.set((int) searchKey, resume);
     }
 
     @Override
-    protected void addResume(Resume resume, Object searchKey) {
+    protected void doSave(Resume resume, Object searchKey) {
         storage.add(resume);
     }
 
     @Override
-    protected void removeResume(Object searchKey) {
+    protected void doDelete(Object searchKey) {
         storage.remove((int) searchKey);
     }
 
     @Override
-    protected boolean checkNotExistInStorage(Object searchKey) {
+    protected boolean isExist(Object searchKey) {
         return Objects.isNull(searchKey);
     }
 }
