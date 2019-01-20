@@ -17,19 +17,27 @@ public class MainFile {
             throw new RuntimeException("Error", e);
         }
 
-        File dir = new File("./src/ru/javawebinar/basejava");
-        System.out.println(dir.isDirectory());
-        String[] list = dir.list();
-        if (list != null) {
-            for (String name : list) {
-                System.out.println(name);
-            }
-        }
+        checkForDIrAndPrint("./");
 
         try (FileInputStream fis = new FileInputStream(filePath)) {
             System.out.println(fis.read());
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private static void checkForDIrAndPrint(String patchName) {
+        File file = new File(patchName);
+        if (file.isDirectory()) {
+            System.out.println(file.getName() + " is directory=true");
+            String[] list = file.list();
+            if (list != null) {
+                for (String name : list) {
+                    checkForDIrAndPrint(patchName + "/" + name);
+                }
+            }
+        } else {
+            System.out.println(file.getName() + " is directory=false");
         }
     }
 }
