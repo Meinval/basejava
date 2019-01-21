@@ -30,13 +30,12 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected Object getSearchKey(String uuid) {
-        Object searchKey = null;
         for (int i = 0; i < storage.size(); i++) {
             if (storage.get(i).getUuid().equals(uuid)) {
                 return i;
             }
         }
-        return searchKey;
+        return null;
     }
 
     @Override

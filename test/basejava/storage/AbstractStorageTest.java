@@ -14,13 +14,14 @@ import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
     protected Storage storage;
+    private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     protected static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
-    private static final Resume resume1 = ResumeTestData.getTestData();
-    protected static final Resume resume2 = new Resume(UUID_2, "Петров Петр Петрович");
-    protected static final Resume resume3 = new Resume(UUID_3, "Александров Александр Александрович");
-    protected static final Resume resume4 = new Resume(UUID_4, "Дмитриев Дмитрий Дмитриевич");
+    private static final Resume resume1 = ResumeTestData.getTestData(UUID_1, "Иванов Иван Иванович");
+    protected static final Resume resume2 = ResumeTestData.getTestData(UUID_2, "Петров Петр Петрович");
+    protected static final Resume resume3 = ResumeTestData.getTestData(UUID_3, "Александров Александр Александрович");
+    protected static final Resume resume4 = ResumeTestData.getTestData(UUID_4, "Дмитриев Дмитрий Дмитриевич");
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -47,7 +48,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() throws Exception {
-        Resume resume = new Resume("uuid3", "Александров Александр Александрович");
+        Resume resume = new Resume(UUID_3, "Олегов Олег Олегович");
         storage.update(resume);
         assertEquals(resume, storage.get(UUID_3));
     }

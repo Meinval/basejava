@@ -9,10 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * gkislin
- * 22.07.2016
- */
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
     private File directory;
 

@@ -6,12 +6,9 @@ import java.time.Month;
 import java.util.ArrayList;
 
 public class ResumeTestData {
-    public ResumeTestData() {
-    }
-
-    public static Resume getTestData() {
-        Resume resumeTestData = new Resume("Григорий Кислин");
-        resumeTestData.setUuid("uuid1");
+    public static Resume getTestData(String uuid, String fio) {
+        Resume resumeTestData = new Resume(fio);
+        resumeTestData.setUuid(uuid);
         resumeTestData.getContactsMap().put(ContactType.PHONE, "+7(921) 855-0482");
         resumeTestData.getContactsMap().put(ContactType.SKYPE, "grigory.kislin");
         resumeTestData.getContactsMap().put(ContactType.EMAIL, "gkislin@yandex.ru");

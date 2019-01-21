@@ -4,10 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-/**
- * gkislin
- * 21.07.2016
- */
 public class MainFile {
     public static void main(String[] args) {
         String filePath = ".\\.gitignore";
@@ -31,7 +27,6 @@ public class MainFile {
     private static void checkForDIrAndPrint(String patchName) {
         File file = new File(patchName);
         if (file.isDirectory()) {
-            System.out.println(file.getName() + " is directory=true");
             String[] list = file.list();
             if (list != null) {
                 for (String name : list) {
@@ -39,7 +34,7 @@ public class MainFile {
                 }
             }
         } else {
-            System.out.println(file.getName() + " is directory=false");
+            System.out.println(file.getName());
         }
     }
 }

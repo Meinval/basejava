@@ -9,10 +9,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-/**
- * gkislin
- * 20.07.2016
- */
 public class MainDate {
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
