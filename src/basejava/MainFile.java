@@ -15,7 +15,7 @@ public class MainFile {
             throw new RuntimeException("Error", e);
         }
 
-        checkForDIrAndPrint("./");
+        checkForDIrAndPrint("./", "");
 
         try (FileInputStream fis = new FileInputStream(filePath)) {
             System.out.println(fis.read());
@@ -24,17 +24,19 @@ public class MainFile {
         }
     }
 
-    private static void checkForDIrAndPrint(String patchName) {
+    private static void checkForDIrAndPrint(String patchName, String space) {
         File file = new File(patchName);
         if (file.isDirectory()) {
+            space = space + "   ";
+            System.out.println(space + file.getName());
             String[] list = file.list();
             if (list != null) {
                 for (String name : list) {
-                    checkForDIrAndPrint(patchName + "/" + name);
+                    checkForDIrAndPrint(patchName + "/" + name, space);
                 }
             }
         } else {
-            System.out.println(file.getName());
+            System.out.println(space + file.getName());
         }
     }
 }
