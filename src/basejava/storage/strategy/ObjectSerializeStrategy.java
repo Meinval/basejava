@@ -1,4 +1,4 @@
-package basejava.strategy;
+package basejava.storage.strategy;
 
 import basejava.exception.StorageException;
 import basejava.model.Resume;

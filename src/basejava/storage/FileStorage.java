@@ -2,7 +2,7 @@ package basejava.storage;
 
 import basejava.exception.StorageException;
 import basejava.model.Resume;
-import basejava.strategy.SerializeStrategy;
+import basejava.storage.strategy.SerializeStrategy;
 
 import java.io.*;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package basejava.storage;
 
-import basejava.strategy.ObjectSerializeStrategy;
+import basejava.storage.strategy.ObjectSerializeStrategy;
 
 public class ObjectStreamFileStorageTest extends AbstractStorageTest {
 

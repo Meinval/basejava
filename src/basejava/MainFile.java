@@ -15,7 +15,7 @@ public class MainFile {
             throw new RuntimeException("Error", e);
         }
 
-        checkForDIrAndPrint("./", "");
+        printFileSystemTree("./", "");
 
         try (FileInputStream fis = new FileInputStream(filePath)) {
             System.out.println(fis.read());
@@ -24,7 +24,7 @@ public class MainFile {
         }
     }
 
-    private static void checkForDIrAndPrint(String patchName, String space) {
+    private static void printFileSystemTree(String patchName, String space) {
         File file = new File(patchName);
         if (file.isDirectory()) {
             space = space + "   ";
@@ -32,7 +32,7 @@ public class MainFile {
             String[] list = file.list();
             if (list != null) {
                 for (String name : list) {
-                    checkForDIrAndPrint(patchName + "/" + name, space);
+                    printFileSystemTree(patchName + "/" + name, space);
                 }
             }
         } else {
