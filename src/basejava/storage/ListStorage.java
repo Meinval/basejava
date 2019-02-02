@@ -60,6 +60,6 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return Objects.isNull(searchKey);
+        return Objects.nonNull(searchKey);
     }
 }

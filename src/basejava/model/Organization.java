@@ -1,15 +1,23 @@
 package basejava.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class Company {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Organization implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String name;
     private String url;
     private List<Position> positions;
 
-    public Company(String name, String url, Position... positions) {
+    public Organization() {
+    }
+
+    public Organization(String name, String url, Position... positions) {
         this.name = name;
         this.url = url;
         this.positions = Arrays.asList(positions);
@@ -43,10 +51,10 @@ public class Company {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Company company = (Company) o;
-        return name.equals(company.name) &&
-                url.equals(company.url) &&
-                positions.equals(company.positions);
+        Organization organization = (Organization) o;
+        return name.equals(organization.name) &&
+                url.equals(organization.url) &&
+                positions.equals(organization.positions);
     }
 
     @Override

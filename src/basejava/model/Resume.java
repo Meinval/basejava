@@ -1,5 +1,8 @@
 package basejava.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Map;
@@ -9,13 +12,19 @@ import java.util.UUID;
 /**
  * Initial resume class
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Comparable<Resume>, Serializable {
     private static final long serialVersionUID = 1L;
     // Unique identifier
     private String uuid;
+
     private String fullName;
     private Map<ContactType, String> contactsMap = new EnumMap<>(ContactType.class);
     private Map<SectionType, AbstractSection> sectionsMap = new EnumMap<>(SectionType.class);
+
+    public Resume() {
+    }
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -58,6 +67,22 @@ public class Resume implements Comparable<Resume>, Serializable {
 
     public void setSectionsMap(Map<SectionType, AbstractSection> sectionsMap) {
         this.sectionsMap = sectionsMap;
+    }
+
+    public String getContact(ContactType type) {
+        return contactsMap.get(type);
+    }
+
+    public AbstractSection getSection(SectionType type) {
+        return sectionsMap.get(type);
+    }
+
+    public void addContact(ContactType type, String value) {
+        contactsMap.put(type, value);
+    }
+
+    public void addSection(SectionType type, AbstractSection section) {
+        sectionsMap.put(type, section);
     }
 
     @Override

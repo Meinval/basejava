@@ -1,16 +1,29 @@
 package basejava.model;
 
+import basejava.util.LocalDateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Objects;
 
 import static basejava.util.DateUtil.of;
 
-public class Position {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Position implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate dateStart;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate dateEnd;
     private String title;
     private String text;
+
+    public Position() {
+    }
 
     public Position(int yearStart, Month mountStart, int yearEnd, Month monthEnd, String title, String text) {
         this.dateStart = of(yearStart, mountStart);
