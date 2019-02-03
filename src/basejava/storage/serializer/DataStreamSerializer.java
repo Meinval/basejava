@@ -5,8 +5,9 @@ import basejava.model.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 public class DataStreamSerializer implements StreamSerializer {
 
@@ -15,42 +16,38 @@ public class DataStreamSerializer implements StreamSerializer {
         try (DataOutputStream dos = new DataOutputStream(os)) {
             dos.writeUTF(r.getUuid());
             dos.writeUTF(r.getFullName());
-            Map<ContactType, String> contacts = r.getContactsMap();
-            dos.writeInt(contacts.size());
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+            writeCollection(dos, r.getContactsMap().entrySet(), entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
-            }
-            Map<SectionType, AbstractSection> sectionMap = r.getSectionsMap();
-            dos.writeInt(sectionMap.size());
-            for (Map.Entry<SectionType, AbstractSection> entry : sectionMap.entrySet()) {
-                dos.writeUTF(entry.getKey().name());
-                if (entry.getValue() instanceof TextSection) {
-                    dos.writeUTF(((TextSection) entry.getValue()).getContent());
+            });
+            writeCollection(dos, r.getSectionsMap().entrySet(), entry -> {
+                SectionType sectionType = entry.getKey();
+                AbstractSection abstractSection = entry.getValue();
+                dos.writeUTF(sectionType.name());
+                switch (sectionType) {
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        dos.writeUTF(((TextSection) abstractSection).getContent());
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        writeCollection(dos, ((TextListSection) abstractSection).getLines(), dos::writeUTF);
+                        break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        writeCollection(dos, ((OrganizationSection) abstractSection).getOrganizations(), organization -> {
+                            dos.writeUTF(organization.getName());
+                            dos.writeUTF(Objects.isNull(organization.getUrl()) ? "" : organization.getUrl());
+                            writeCollection(dos, organization.getPositions(), position -> {
+                                dos.writeUTF(position.getDateStart().toString());
+                                dos.writeUTF(position.getDateEnd().toString());
+                                dos.writeUTF(position.getTitle());
+                                dos.writeUTF(Objects.isNull(position.getText()) ? "" : position.getText());
+                            });
+                        });
+                        break;
                 }
-                if (entry.getValue() instanceof TextListSection) {
-                    TextListSection textListSection = (TextListSection) entry.getValue();
-                    dos.writeInt(textListSection.getLines().size());
-                    for (String s : textListSection.getLines()) {
-                        dos.writeUTF(s);
-                    }
-                }
-                if (entry.getValue() instanceof OrganizationSection) {
-                    OrganizationSection organizationSection = (OrganizationSection) entry.getValue();
-                    dos.writeInt(organizationSection.getOrganizations().size());
-                    for (Organization organization : organizationSection.getOrganizations()) {
-                        dos.writeUTF(organization.getName());
-                        dos.writeUTF(organization.getUrl());
-                        dos.writeInt(organization.getPositions().size());
-                        for (Position position : organization.getPositions()) {
-                            dos.writeUTF(position.getDateStart().toString());
-                            dos.writeUTF(position.getDateEnd().toString());
-                            dos.writeUTF(position.getTitle());
-                            dos.writeUTF(position.getText());
-                        }
-                    }
-                }
-            }
+            });
         }
     }
 
@@ -69,20 +66,14 @@ public class DataStreamSerializer implements StreamSerializer {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 switch (sectionType) {
                     case OBJECTIVE:
-                        addTextSection(dis, resume, sectionType);
-                        break;
                     case PERSONAL:
                         addTextSection(dis, resume, sectionType);
                         break;
                     case ACHIEVEMENT:
-                        addTextListSection(dis, resume, sectionType);
-                        break;
                     case QUALIFICATIONS:
                         addTextListSection(dis, resume, sectionType);
                         break;
                     case EDUCATION:
-                        addOrganizationSection(dis, resume, sectionType);
-                        break;
                     case EXPERIENCE:
                         addOrganizationSection(dis, resume, sectionType);
                         break;
@@ -130,5 +121,16 @@ public class DataStreamSerializer implements StreamSerializer {
 
     private void addTextSection(DataInputStream dis, Resume resume, SectionType sectionType) throws IOException {
         resume.addSection(sectionType, new TextSection(dis.readUTF()));
+    }
+
+    private interface Writer<T> {
+        void write(T t) throws IOException;
+    }
+
+    private <T> void writeCollection(DataOutputStream dos, Collection<T> collection, Writer<T> writer) throws IOException {
+        dos.writeInt(collection.size());
+        for (T item : collection) {
+            writer.write(item);
+        }
     }
 }
