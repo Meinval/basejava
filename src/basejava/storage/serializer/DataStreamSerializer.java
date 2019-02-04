@@ -57,70 +57,64 @@ public class DataStreamSerializer implements StreamSerializer {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            int size = dis.readInt();
-            for (int i = 0; i < size; i++) {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
-            size = dis.readInt();
-            for (int i = 0; i < size; i++) {
+            readItems(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+            readItems(dis, () -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
-                switch (sectionType) {
-                    case OBJECTIVE:
-                    case PERSONAL:
-                        addTextSection(dis, resume, sectionType);
-                        break;
-                    case ACHIEVEMENT:
-                    case QUALIFICATIONS:
-                        addTextListSection(dis, resume, sectionType);
-                        break;
-                    case EDUCATION:
-                    case EXPERIENCE:
-                        addOrganizationSection(dis, resume, sectionType);
-                        break;
-                }
-            }
+                resume.addSection(sectionType, readSection(dis, sectionType));
+            });
             return resume;
         }
     }
 
-    private void addOrganizationSection(DataInputStream dis, Resume resume, SectionType sectionType) throws IOException {
-        int size = dis.readInt();
-        OrganizationSection organizationSection = new OrganizationSection();
-        List<Organization> organizations = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            Organization organization = new Organization();
-            organization.setName(dis.readUTF());
-            organization.setUrl(dis.readUTF());
-            int positionsSize = dis.readInt();
-            List<Position> positions = new ArrayList<>();
-            for (int n = 0; n < positionsSize; n++) {
-                Position position = new Position();
-                position.setDateStart(LocalDate.parse(dis.readUTF()));
-                position.setDateEnd(LocalDate.parse(dis.readUTF()));
-                position.setTitle(dis.readUTF());
-                position.setText(dis.readUTF());
-                positions.add(position);
-            }
-            organization.setPositions(positions);
-            organizations.add(organization);
+    private AbstractSection readSection(DataInputStream dis, SectionType sectionType) throws IOException {
+        switch (sectionType) {
+            case OBJECTIVE:
+            case PERSONAL:
+                return new TextSection(dis.readUTF());
+            case ACHIEVEMENT:
+            case QUALIFICATIONS:
+                return new TextListSection(readList(dis, dis::readUTF));
+            case EDUCATION:
+            case EXPERIENCE:
+                return new OrganizationSection(
+                        readList(dis, () -> new Organization(
+                                dis.readUTF(),
+                                dis.readUTF(),
+                                readList(dis, () -> new Position(readLocalDate(dis), readLocalDate(dis), dis.readUTF(), dis.readUTF()))
+                        ))
+                );
+            default:
+                throw new IllegalStateException();
         }
-        organizationSection.setOrganizations(organizations);
-        resume.addSection(sectionType, organizationSection);
     }
 
-    private void addTextListSection(DataInputStream dis, Resume resume, SectionType sectionType) throws IOException {
-        int size = dis.readInt();
-        TextListSection textListSection = new TextListSection();
-        List<String> lines = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            lines.add(dis.readUTF());
-        }
-        textListSection.setLines(lines);
-        resume.addSection(sectionType, textListSection);
+    private LocalDate readLocalDate(DataInputStream dis) throws IOException {
+        return LocalDate.parse(dis.readUTF());
     }
 
-    private void addTextSection(DataInputStream dis, Resume resume, SectionType sectionType) throws IOException {
-        resume.addSection(sectionType, new TextSection(dis.readUTF()));
+
+    private interface Reader<T> {
+        T read() throws IOException;
+    }
+
+    private <T> List<T> readList(DataInputStream dis, Reader<T> reader) throws IOException {
+        int size = dis.readInt();
+        List<T> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            list.add(reader.read());
+        }
+        return list;
+    }
+
+    private void readItems(DataInputStream dis, ElementProcessor processor) throws IOException {
+        int size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            processor.process();
+        }
+    }
+
+    private interface ElementProcessor {
+        void process() throws IOException;
     }
 
     private interface Writer<T> {
