@@ -25,16 +25,13 @@ public class Position implements Serializable {
     public Position() {
     }
 
+    public Position(int yearStart, Month mountStart, int yearEnd, Month monthEnd, String title, String text) {
+        this(of(yearStart, mountStart), of(yearEnd, monthEnd), title, text);
+    }
+
     public Position(LocalDate dateStart, LocalDate dateEnd, String title, String text) {
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
-        this.title = title;
-        this.text = text;
-    }
-
-    public Position(int yearStart, Month mountStart, int yearEnd, Month monthEnd, String title, String text) {
-        this.dateStart = of(yearStart, mountStart);
-        this.dateEnd = of(yearEnd, monthEnd);
         this.title = title;
         this.text = text;
     }

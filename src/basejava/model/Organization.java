@@ -17,16 +17,14 @@ public class Organization implements Serializable {
     public Organization() {
     }
 
+    public Organization(String name, String url, Position... positions) {
+        this(name, url, Arrays.asList(positions));
+    }
+
     public Organization(String name, String url, List<Position> positions) {
         this.name = name;
         this.url = url;
         this.positions = positions;
-    }
-
-    public Organization(String name, String url, Position... positions) {
-        this.name = name;
-        this.url = url;
-        this.positions = Arrays.asList(positions);
     }
 
     public String getName() {

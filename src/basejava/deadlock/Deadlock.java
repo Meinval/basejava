@@ -1,8 +1,8 @@
 package basejava.deadlock;
 
 class Deadlock implements Runnable {
-    private FirstClass a = new FirstClass();
-    private SecondClass b = new SecondClass();
+    private SomeClass a = new SomeClass("oneClass");
+    private SomeClass b = new SomeClass("anotherClass");
 
     private Deadlock() {
         Thread.currentThread().setName("Главный поток");
@@ -13,7 +13,7 @@ class Deadlock implements Runnable {
     }
 
     public void run() {
-        b.bar(a); // получить блокировку для объекта b в другом потоке исполнения
+        b.foo(a); // получить блокировку для объекта b в другом потоке исполнения
         System.out.println("Назад в другой поток");
     }
 
