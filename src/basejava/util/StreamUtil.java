@@ -21,18 +21,15 @@ public class StreamUtil {
         return Arrays
                 .stream(values)
                 .distinct()
-                .boxed()
                 .sorted()
                 .reduce(0, (l, r) -> l * 10 + r);
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
         return integers
-                .stream()
-                .reduce(0, (l, r) -> l + r) % 2 == 0 ? integers
-                .stream().filter(e -> e % 2 != 0)
-                .collect(Collectors.toList()) : integers
-                .stream().filter(e -> e % 2 == 0)
+                .stream().filter(integers
+                        .stream()
+                        .reduce(0, (l, r) -> l + r) % 2 == 0 ? e -> e % 2 != 0 : e -> e % 2 == 0)
                 .collect(Collectors.toList());
     }
 }
