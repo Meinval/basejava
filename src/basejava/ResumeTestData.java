@@ -1,15 +1,12 @@
 package basejava;
 
-import basejava.model.*;
-
-import java.time.Month;
-import java.util.ArrayList;
+import basejava.model.Resume;
 
 public class ResumeTestData {
     public static Resume getTestData(String uuid, String fio) {
         Resume resumeTestData = new Resume(fio);
         resumeTestData.setUuid(uuid);
-        resumeTestData.getContactsMap().put(ContactType.PHONE, "+7(921) 855-0482");
+        /*resumeTestData.getContactsMap().put(ContactType.PHONE, "+7(921) 855-0482");
         resumeTestData.getContactsMap().put(ContactType.SKYPE, "grigory.kislin");
         resumeTestData.getContactsMap().put(ContactType.EMAIL, "gkislin@yandex.ru");
         resumeTestData.getContactsMap().put(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
@@ -185,7 +182,7 @@ public class ResumeTestData {
                         Month.JUNE,
                         "Закончил с отличием",
                         "")));
-        resumeTestData.getSectionsMap().put(SectionType.EDUCATION, new OrganizationSection(educations));
+        resumeTestData.getSectionsMap().put(SectionType.EDUCATION, new OrganizationSection(educations));*/
         return resumeTestData;
     }
 }
