@@ -1,19 +1,20 @@
 package basejava;
 
+import basejava.model.ContactType;
 import basejava.model.Resume;
 
 public class ResumeTestData {
     public static Resume getTestData(String uuid, String fio) {
         Resume resumeTestData = new Resume(fio);
         resumeTestData.setUuid(uuid);
-        /*resumeTestData.getContactsMap().put(ContactType.PHONE, "+7(921) 855-0482");
+        resumeTestData.getContactsMap().put(ContactType.PHONE, "+7(921) 855-0482");
         resumeTestData.getContactsMap().put(ContactType.SKYPE, "grigory.kislin");
         resumeTestData.getContactsMap().put(ContactType.EMAIL, "gkislin@yandex.ru");
         resumeTestData.getContactsMap().put(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
         resumeTestData.getContactsMap().put(ContactType.GITHUB, "https://github.com/gkislin");
         resumeTestData.getContactsMap().put(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
         resumeTestData.getContactsMap().put(ContactType.HOMEPAGE, "http://gkislin.ru/");
-        resumeTestData.getSectionsMap().put(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
+        /*resumeTestData.getSectionsMap().put(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
         resumeTestData.getSectionsMap().put(SectionType.PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
         ArrayList<String> achievements = new ArrayList<>();
         achievements.add("● С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"" +
