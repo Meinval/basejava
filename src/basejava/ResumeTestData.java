@@ -1,7 +1,8 @@
 package basejava;
 
-import basejava.model.ContactType;
-import basejava.model.Resume;
+import basejava.model.*;
+
+import java.util.ArrayList;
 
 public class ResumeTestData {
     public static Resume getTestData(String uuid, String fio) {
@@ -14,7 +15,7 @@ public class ResumeTestData {
         resumeTestData.getContactsMap().put(ContactType.GITHUB, "https://github.com/gkislin");
         resumeTestData.getContactsMap().put(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
         resumeTestData.getContactsMap().put(ContactType.HOMEPAGE, "http://gkislin.ru/");
-        /*resumeTestData.getSectionsMap().put(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
+        resumeTestData.getSectionsMap().put(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
         resumeTestData.getSectionsMap().put(SectionType.PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
         ArrayList<String> achievements = new ArrayList<>();
         achievements.add("● С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"" +
@@ -54,7 +55,7 @@ public class ResumeTestData {
         qualifications.add("● программирования");
         qualifications.add("● Родной русский, английский \"upper intermediate\"");
         resumeTestData.getSectionsMap().put(SectionType.QUALIFICATIONS, new TextListSection(qualifications));
-        ArrayList<Organization> experiences = new ArrayList<>();
+        /*ArrayList<Organization> experiences = new ArrayList<>();
         experiences.add(new Organization("Java Online Projects",
                 "http://javaops.ru/",
                 new Position(2013,
