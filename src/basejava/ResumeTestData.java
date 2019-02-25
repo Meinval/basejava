@@ -2,6 +2,7 @@ package basejava;
 
 import basejava.model.*;
 
+import java.time.Month;
 import java.util.ArrayList;
 
 public class ResumeTestData {
@@ -55,7 +56,7 @@ public class ResumeTestData {
         qualifications.add("● программирования");
         qualifications.add("● Родной русский, английский \"upper intermediate\"");
         resumeTestData.getSectionsMap().put(SectionType.QUALIFICATIONS, new TextListSection(qualifications));
-        /*ArrayList<Organization> experiences = new ArrayList<>();
+        ArrayList<Organization> experiences = new ArrayList<>();
         experiences.add(new Organization("Java Online Projects",
                 "http://javaops.ru/",
                 new Position(2013,
@@ -184,7 +185,7 @@ public class ResumeTestData {
                         Month.JUNE,
                         "Закончил с отличием",
                         "")));
-        resumeTestData.getSectionsMap().put(SectionType.EDUCATION, new OrganizationSection(educations));*/
+        resumeTestData.getSectionsMap().put(SectionType.EDUCATION, new OrganizationSection(educations));
         return resumeTestData;
     }
 }
