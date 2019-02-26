@@ -1,19 +1,41 @@
 section {
-    width: 100%;
-    /*margin: auto;*/
+    width: 900px;
+    margin-left: 200px;
+    font-family: Arial, serif;
+    font-size: 16px;
 }
 
+input {
+    font-family: Arial, serif;
+    font-size: 16px;
+}
+
+textarea {
+    font-family: Arial, serif;
+    font-size: 16px;
+    box-shadow: #2E6E9E;
+}
+
+
 header {
-    background: none repeat scroll 0 0 #A6C9E2;
-    color: #2E6E9E;
+    background: none repeat scroll 0 0 #e20013;
+    color: #FFFFFF;
     font-size: 20px;
     padding: 5px 20px;
     text-align: center;
 }
 
+a {
+    color: black;
+}
+
+a:hover {
+    color: cornflowerblue;
+}
+
 footer {
-    background: none repeat scroll 0 0 #A6C9E2;
-    color: #2E6E9E;
+    background: none repeat scroll 0 0 #e20013;
+    color: #FFFFFF;
     font-size: 20px;
     padding: 5px 20px;
     margin: 20px 0;
