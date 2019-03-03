@@ -14,6 +14,7 @@ import static basejava.util.DateUtil.of;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Position implements Serializable {
+    public static final Position EMPTY = new Position();
     private static final long serialVersionUID = 1L;
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate dateStart;

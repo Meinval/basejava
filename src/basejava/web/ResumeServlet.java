@@ -1,7 +1,6 @@
 package basejava.web;
 
 import basejava.Config;
-import basejava.ResumeTestData;
 import basejava.exception.NotExistStorageException;
 import basejava.model.*;
 import basejava.storage.Storage;
@@ -16,10 +15,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class ResumeServlet extends HttpServlet {
 
-    private Storage storage; // = Config.get().getStorage();
+    private Storage storage;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -27,7 +27,7 @@ public class ResumeServlet extends HttpServlet {
         storage = Config.get().getStorage();
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
@@ -68,14 +68,18 @@ public class ResumeServlet extends HttpServlet {
                         String[] urls = request.getParameterValues(sectionType.name() + "url");
                         for (int i = 0; i < organisations.length; i++) {
                             Organization organization = new Organization(organisations[i], urls[i]);
-                            String[] datesStart = request.getParameterValues(sectionType.name() + organisations[i] + "datestart");
-                            String[] datesEnd = request.getParameterValues(sectionType.name() + organisations[i] + "dateend");
-                            String[] titles = request.getParameterValues(sectionType.name() + organisations[i] + "title");
-                            String[] texts = request.getParameterValues(sectionType.name() + organisations[i] + "text");
+                            String[] datesStart = request.getParameterValues(sectionType.name() + i + "datestart");
+                            String[] datesEnd = request.getParameterValues(sectionType.name() + i + "dateend");
+                            String[] titles = request.getParameterValues(sectionType.name() + i + "title");
+                            String[] texts = request.getParameterValues(sectionType.name() + i + "text");
                             List<Position> positions = new ArrayList<>();
-                            for (int x = 0; x < titles.length; x++) {
-                                Position position = new Position(LocalDate.parse(datesStart[x]), LocalDate.parse(datesEnd[x]), titles[x], texts[x]);
-                                positions.add(position);
+                            if (Objects.nonNull(titles)) {
+                                for (int x = 0; x < titles.length; x++) {
+                                    if ((Objects.nonNull(titles[x]) && !titles[x].equals("")) && (Objects.nonNull(datesStart[x]) && !datesStart[x].equals("")) && (Objects.nonNull(datesEnd[x]) && !datesEnd[x].equals(""))) {
+                                        Position position = new Position(Objects.isNull(datesStart[x]) ? null : LocalDate.parse(datesStart[x]), Objects.isNull(datesEnd[x]) ? null : LocalDate.parse(datesEnd[x]), titles[x], texts[x]);
+                                        positions.add(position);
+                                    }
+                                }
                             }
                             organization.setPositions(positions);
                             organizations.add(organization);
@@ -95,7 +99,7 @@ public class ResumeServlet extends HttpServlet {
         response.sendRedirect("resume");
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String uuid = request.getParameter("uuid");
         String action = request.getParameter("action");
         if (action == null) {
@@ -112,7 +116,7 @@ public class ResumeServlet extends HttpServlet {
             case "view":
             case "edit":
                 if (uuid.equals("null")) {
-                    r = ResumeTestData.getTestData(String.valueOf(Config.get().getStorage().size()), "Иванов Иван Иванович");
+                    r = Resume.EMPTY;
                 } else {
                     r = storage.get(uuid);
                 }
